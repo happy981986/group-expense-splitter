@@ -1,6 +1,6 @@
 import os
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session,send_from_directory
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -16,6 +16,10 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///splitter.db")
 
+
+@app.route("/sw.js")
+def service_worker():
+    return send_from_directory("static", "sw.js")
 
 @app.after_request
 def after_request(response):
