@@ -1,0 +1,41 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    hash TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS groups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS group_members (
+    group_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY(group_id) REFERENCES groups(id),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    PRIMARY KEY (group_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    group_id INTEGER NOT NULL,
+    payer_id INTEGER NOT NULL,
+    description TEXT NOT NULL,
+    amount NUMERIC NOT NULL CHECK(amount > 0),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(group_id) REFERENCES groups(id),
+    FOREIGN KEY(payer_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS expense_splits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    expense_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    amount_owed NUMERIC NOT NULL CHECK(amount_owed >= 0),
+    FOREIGN KEY(expense_id) REFERENCES expenses(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+);
