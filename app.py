@@ -7,6 +7,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+
+
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
@@ -25,9 +27,12 @@ db_path = os.path.join(os.path.dirname(__file__), "splitter.db")
 db = SQL(f"sqlite:///{db_path}")
 
 
+
+
 @app.route("/sw.js")
 def service_worker():
-    return send_from_directory("static", "sw.js")
+    return send_from_directory("static", "sw.js", mimetype="application/javascript")
+
 
 @app.after_request
 def after_request(response):
