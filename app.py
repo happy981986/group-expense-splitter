@@ -110,6 +110,7 @@ def index():
     return render_template("index.html", my_groups=my_groups, other_groups=other_groups)
 
 
+
 @app.route("/create_group", methods=["GET", "POST"])
 @login_required
 def create_group():
