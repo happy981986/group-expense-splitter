@@ -18,7 +18,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///splitter.db")
+db_path = os.path.join(os.path.dirname(__file__), "splitter.db")
+db = SQL(f"sqlite:///{db_path}")
 
 
 @app.route("/sw.js")
