@@ -3,44 +3,62 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block main %}
+<div class="container mt-3">
+    <!-- Top Bar with Dashboard Title & Logout -->
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="mb-0">Dashboard</h2>
+        </div>
+        <div>
+            <a href="/logout" class="btn btn-outline-danger btn-sm">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Create Group Action -->
     <div class="mb-4">
-        <h2>Dashboard</h2>
-        <a href="/create_group" class="btn btn-primary mt-2">+ Create New Group</a>
+        <a href="/create_group" class="btn btn-primary">+ Create New Group</a>
     </div>
 
-    <!-- MY GROUPS -->
-    <div class="mb-5">
-        <h4 class="text-start mb-3">My Groups</h4>
-        {% if my_groups %}
-            <div class="list-group w-75 mx-auto">
-                {% for group in my_groups %}
-                    <a href="/group/{{ group.id }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <strong>{{ group.name }}</strong>
-                        <span class="badge bg-primary rounded-pill">View Group</span>
-                    </a>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-muted">You haven't joined any groups yet.</p>
-        {% endif %}
-    </div>
+    <div class="row">
+        <!-- MY GROUPS -->
+        <div class="col-12 mb-5">
+            <h4 class="mb-3 text-start">My Groups</h4>
+            {% if my_groups %}
+                <div class="list-group">
+                    {% for group in my_groups %}
+                        <a href="/group/{{ group.id }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                            <span class="fw-bold">{{ group.name }}</span>
+                            <span class="badge bg-primary rounded-pill">View Group &rarr;</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card p-4 text-center bg-light">
+                    <p class="text-muted mb-0">You haven't joined any groups yet.</p>
+                </div>
+            {% endif %}
+        </div>
 
-    <!-- OTHER AVAILABLE GROUPS -->
-    <div class="mt-4">
-        <h4 class="text-start mb-3">Other Available Groups</h4>
-        {% if other_groups %}
-            <div class="list-group w-75 mx-auto">
-                {% for group in other_groups %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <strong>{{ group.name }}</strong>
-                        <form action="/join_group/{{ group.id }}" method="post" class="mb-0">
-                            <button type="submit" class="btn btn-sm btn-outline-success">Join Group</button>
-                        </form>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-muted">No other groups available to join right now.</p>
-        {% endif %}
+        <!-- OTHER AVAILABLE GROUPS -->
+        <div class="col-12 mb-4">
+            <h4 class="mb-3 text-start">Other Available Groups</h4>
+            {% if other_groups %}
+                <div class="list-group">
+                    {% for group in other_groups %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <span class="fw-bold">{{ group.name }}</span>
+                            <form action="/join_group/{{ group.id }}" method="post" class="mb-0">
+                                <button type="submit" class="btn btn-sm btn-outline-success">Join Group</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card p-4 text-center bg-light">
+                    <p class="text-muted mb-0">No other groups available to join right now.</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
+</div>
 {% endblock %}
